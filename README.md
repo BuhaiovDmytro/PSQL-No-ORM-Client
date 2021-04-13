@@ -9,10 +9,6 @@ Functionality:
 
 # How to use
 
-First you have to set your password, host and db name in ```psql_getters.cpp```
-
-Then:
-
  - Clone or download the repository
  ```linux
  git clone git@github.com:BuhaiovDmytro/PSQL-No-ORM-Client.git
@@ -26,7 +22,12 @@ cmake ..
 cmake --build .
 ```
  - Launch program 
- ```linux
- ./PSQL-No-ORM-Client
-```
-- Follow programm's instructions
+
+Use
+ ``` ./PSQL_Client <password> ```
+to launch program with default parameters(```user = postgres host = 127.0.0.1 dbname = postgres```)
+
+Or ```./PSQL_Client <password> <user> <host> <dbname>``` to connect to Postgres with your own parameters
+
+
+- Follow program's instructions

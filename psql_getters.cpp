@@ -8,13 +8,17 @@
 #define PG_FOREIGN_KEY_VIOLATION "23503"
 #define PG_UNIQUE_KEY_VIOLATION "23505"
 
-PGconn* psql_init(){
-    //TODO: Hide password
-    PGconn *conn = PQconnectdb("user = postgres password = kukurudza25 host = 127.0.0.1 dbname = postgres");
+PGconn* psql_init(const std::string& password, const std::string& user, const std::string& host,
+                  const std::string& dbname){
+
+    std::ostringstream conn_params;
+    conn_params << "user = " << user << " password = " << password << " host = " << host << " dbname = " << dbname;
+
+    PGconn *conn = PQconnectdb(conn_params.str().c_str());
 
     if (PQstatus(conn) != CONNECTION_OK)
     {
-        std::cerr << "ERROR: No connection to database" ;
+        std::cerr << PQerrorMessage(conn) ;
         exit_nicely(conn);
     }
 
@@ -128,7 +132,7 @@ std::vector<std::string> get_col_names(PGconn *conn, const std::string& table){
     return col_names;
 }
 
-std::vector<std::string> get_col_types(PGconn *conn, const std::string& table){//TODO: ERROR HANDLING
+std::vector<std::string> get_col_types(PGconn *conn, const std::string& table){
     PGresult *res = PQexec(conn, "BEGIN");
     if (PQresultStatus(res) != PGRES_COMMAND_OK)
     {
